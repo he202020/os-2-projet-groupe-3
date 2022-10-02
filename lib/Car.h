@@ -5,10 +5,10 @@
 typedef struct Car {
     int number; // numéro de la voiture
 
-    int bestS1; // meilleur temps secteur 1
-    int bestS2; // meilleur temps secteur 2
-    int bestS3; // meilleur temps secteur 3
-    int bestTurn; // meilleur temps d'un tour
+    double bestS1; // meilleur temps secteur 1
+    double bestS2; // meilleur temps secteur 2
+    double bestS3; // meilleur temps secteur 3
+    double bestTurn; // meilleur temps d'un tour
 } Car;
 
 /*

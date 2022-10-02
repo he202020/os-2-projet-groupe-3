@@ -17,10 +17,10 @@ void makeCarTurn(Car car) {
         return; // lorsque le numéro de la voiture n'a pas été désigné
     }
     for (int i = 0; i < nbrTurn; i++) {
-        int s1 = getRandom(MIN_TIME, MAX_TIME, car.number);
-        int s2 = getRandom(MIN_TIME, MAX_TIME, car.number);
-        int s3 = getRandom(MIN_TIME, MAX_TIME, car.number);
-        int turnTime = s1 + s2 + s3;
+        double s1 = getRandom(MIN_TIME, MAX_TIME, car.number);
+        double s2 = getRandom(MIN_TIME, MAX_TIME, car.number);
+        double s3 = getRandom(MIN_TIME, MAX_TIME, car.number);
+        double turnTime = s1 + s2 + s3;
 
         // vérifie si la voiture a fait un meilleur temps ou si la voiture est à son premier tour (dans ce cas
         // la valeur des temps est égal à CAR_DEFAULT_VALUE
@@ -31,10 +31,10 @@ void makeCarTurn(Car car) {
     }
 
     printf("Performances voiture N° %d: \n"
-           "- Meilleur temps secteur 1 : %ds\n"
-           "- Meilleur temps secteur 2: %ds\n"
-           "- Meilleur temps secteur 3: %ds\n"
-           "- Meilleur temps d'un tour : %ds\n",
+           "- Meilleur temps secteur 1 : %fs\n"
+           "- Meilleur temps secteur 2: %fs\n"
+           "- Meilleur temps secteur 3: %fs\n"
+           "- Meilleur temps d'un tour : %fs\n",
            car.number, car.bestS1, car.bestS2, car.bestS3, car.bestTurn);
     return;
 }
