@@ -7,7 +7,7 @@
 #define MAX_TIME 45
 
 
-void makeCarTurn(Car car) {
+void makeCarTurn(Car car, int nbrTurn) {
     // cette variable n'est utilisé que pour le test afin de savoir le nombre de tour qu'une voiture va faire
     // une fois que le système de temps sera implémentée, elle pourra être remplacée
     int nbrTurn = 5;
