@@ -2,9 +2,14 @@
 #include "simon.h"
 #include "car.h"
 
+int cars[] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9};
+int length = sizeof(cars)/sizeof(cars[0])
+
 int main() {
-    Car car = getCar(20);
-    turn_car(car, 5);
+    for (int i = 0; i < length; i++) {
+        Car car = getCar(cars[i]);
+        turn_car(car, 5);
+    }
 }
 
 /*
