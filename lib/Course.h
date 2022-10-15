@@ -1,8 +1,4 @@
 #ifndef OS_2_PROJET_GROUPE_3_COURSE_H
-#include <stdio.h>
-#include "Car.h"
-#include "Tours.h"
-
 #define OS_2_PROJET_GROUPE_3_COURSE_H
 #define DEFAULT_VALUE -1
 
@@ -14,40 +10,58 @@ typedef struct Course {
     double bestTurn;
 
     // les voitures qui ont fait le meilleur temps
-    int carS1;
-    int carS2;
-    int carS3;
-    int carTurn;
+    Car carS1;
+    Car carS2;
+    Car carS3;
+    Car carTurn;
 } Course;
 
+#include <stdio.h>
+#include "Car.h"
+#include "Tours.h"
+#include "Print.h"
+
+Course initCourse();
+void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars);
+
 Course initCourse() {
-    Course  course;
+    Course course;
     course.bestS1 = DEFAULT_VALUE;
     course.bestS2 = DEFAULT_VALUE;
     course.bestS3 = DEFAULT_VALUE;
     course.bestTurn = DEFAULT_VALUE;
-    course.carS1 = DEFAULT_VALUE;
-    course.carS2 = DEFAULT_VALUE;
-    course.carS3 = DEFAULT_VALUE;
-    course.carTurn = DEFAULT_VALUE;
     return course;
 }
 
-Course beginCourse(Car cars[], int nbrCars, int nbrTurn) {
-    Course course = initCourse();
+void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
     if (nbrCars <= 0) {
-        printf("Impossibilité de commencer une course avec aucun participant...");
-        return course;
+        printf("Impossibilité de commencer une course sans participant...");
+        return;
     }
 
     for (int i = 0; i < nbrTurn; i++) {
         for (int j = 0; j < nbrCars; j++) {
             Car car = cars[j];
             makeCarTurn(car);
-            if (car.s1 > course.bestS1) {}
+            if (car.currentS1 < course.bestS1 || course.bestS1 == DEFAULT_VALUE) {
+                course.bestS1 = car.currentS1;
+                course.carS1 = car;
+            }
+            if (car.currentS2 < course.bestS2 || course.bestS2 == DEFAULT_VALUE) {
+                course.bestS2 = car.currentS2;
+                course.carS3 = car;
+            }
+            if (car.currentS3 < course.bestS3 || course.bestS3 == DEFAULT_VALUE) {
+                course.bestS3 = car.currentS3;
+                course.carS3 = car;
+            }
+            if (getCurrentTurn(car) < course.bestTurn || course.bestTurn == DEFAULT_VALUE) {
+                course.bestTurn = getCurrentTurn(car);
+                course.carTurn = car;
+            }
         }
+        printCourse(course);
     }
-
 }
 
 #undef DEFAULT_VALUE
