@@ -1,8 +1,4 @@
-#include <stdlib.h>
-#include "lib/Tours.h"
 #include "lib/Car.h"
-#include "lib/StrUtil.h"
-#include <stdbool.h>
 #include "lib/Random.h"
 #include "lib/Course.h"
 
@@ -15,5 +11,5 @@ int main() {
             getCar(77), getCar(24), getCar(47), getCar(9)};
 
     Course course = initCourse();
-    beginCourse(course, 1, cars, 4);
+    beginCourse(course, 2, cars, 4);
 }

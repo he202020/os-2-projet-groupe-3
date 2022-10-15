@@ -1,10 +1,11 @@
+#ifndef OS_2_PROJET_GROUPE_3_RANDOM_H
+#define OS_2_PROJET_GROUPE_3_RANDOM_H
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#ifndef OS_2_PROJET_GROUPE_3_RANDOM_H
-#define OS_2_PROJET_GROUPE_3_RANDOM_H
 
 double getRandom(int min, int max, int seed);
+
 
 /*
  * La seed est un nombre qui permet de définir l'aléatoire
