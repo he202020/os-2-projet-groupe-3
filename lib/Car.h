@@ -8,6 +8,7 @@
 
 typedef struct Car {
     int id; // numéro de la voiture
+    int pid;
 
     double currentS1;
     double currentS2;
@@ -26,6 +27,7 @@ void strCar(Car car);
 Car getCar(int id) {
     Car car;
     car.id = id;
+    car.pid = CAR_DEFAULT_TIME;
     car.currentS1 = CAR_DEFAULT_TIME;
     car.currentS2 = CAR_DEFAULT_TIME;
     car.currentS3 = CAR_DEFAULT_TIME;
