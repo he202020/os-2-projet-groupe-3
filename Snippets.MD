@@ -42,6 +42,7 @@ définir l'état de la course en `false`,
 course est en `true` (*le *`sleep(1)`* permet de ne pas spam
 le terminal de messages*).
 
+***
 ### 2) Update une voiture dans la SM :
 Permet, à partir de l'attribut `smAddr` d'une structure *Car*,
 de modifier les données de sa structure dans la 
@@ -82,3 +83,4 @@ d'utiliser le pointeur de la variable en cours comme les
 données sont stockées et consultées via la SM.
 La différence entre ces 2 pointeurs peut être vue en faisant
 `printf("%p %p\n", &car, car.smAddr)`.
+***
