@@ -8,12 +8,18 @@
 
 #define SHM_MAIN_PID_KEY 5678
 #define SHM_COURSE_STATE_KEY 4579
+#define SHM_COURSE_KEY 5421
+#define SHM_CAR_ARRAY_KEY 1515
 
 void createPid(Car cars[], int length);
 void clearSHM();
 void registerMainPid(int pid);
 int getMainPid();
 void setCourseState(bool state);
+bool getCourseState();
+void registerCourse(Course course);
+Course getCourse();
+void insertCarArray(Car cars[], int length);
 
 /*
  * Créer tous les processus enfants et en associe un à chaque voiture
@@ -30,10 +36,29 @@ void createPid(Car cars[], int length) {
  */
 void clearSHM() {
     int shmid;
-    if ((shmid = shmget(SHM_MAIN_PID_KEY, sizeof(int), IPC_CREAT | 0666)) != -1)
+    if ((shmid = shmget(SHM_MAIN_PID_KEY, sizeof(int), IPC_CREAT | 0666)) != -1) {
+        int* addr = (int*) shmat(shmid, NULL, 0666);
+        shmdt(addr);
         shmctl(shmid, IPC_RMID, NULL);
-    if ((shmid = shmget(SHM_COURSE_STATE_KEY, sizeof(bool), IPC_CREAT | 0666)) != -1)
+    }
+
+    if ((shmid = shmget(SHM_COURSE_STATE_KEY, sizeof(bool), IPC_CREAT | 0666)) != -1) {
         shmctl(shmid, IPC_RMID, NULL);
+        bool* addr = (bool*) shmat(shmid, NULL, 0666);
+        shmdt(addr);
+    }
+
+    if ((shmid = shmget(SHM_COURSE_KEY, sizeof(Course), IPC_CREAT | 0666)) != -1) {
+        Course* addr = (Course*) shmat(shmid, NULL, 0666);
+        shmdt(addr);
+        shmctl(shmid, IPC_RMID, NULL);
+    }
+
+    if ((shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[20]), IPC_CREAT | 0666)) != -1) {
+        Car* addr = shmat(shmid, NULL, 0666);
+        shmdt(addr);
+        shmctl(shmid, IPC_RMID, NULL);
+    }
 }
 
 /*
@@ -84,6 +109,62 @@ bool getCourseState() {
     return *shm;
 }
 
+/*
+ * Permet d'enregister une structure course dans la SM
+ */
+void registerCourse(Course course) {
+    int shmid = shmget(SHM_COURSE_KEY, sizeof(Course), IPC_CREAT | 0666);
+    if (shmid == -1) exit(5);
+    Course* shm = (Course*) shmat(shmid, NULL, 0);
+    Course* c = shm;
+    *c++ = course;
+}
 
+/*
+ * Permet de récupérer la course mise dans la SM
+ */
+Course getCourse() {
+    int shmid = shmget(SHM_COURSE_KEY, sizeof(Course), 0666);
+    if (shmid == -1) exit(6);
+    Course* shm = (Course*) shmat(shmid, NULL, 0);
+    return *shm;
+}
 
+/*
+ * Insère une liste de structure "Car" dans la SM
+ * Définit aussi l'attribut "smAddr" comme l'addresse de la structure Car stockée dans la SM
+ */
+void insertCarArray(Car cars[], int length) {
+    int shhmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), IPC_CREAT | 0666);
+    Car* shm = (Car*) shmat(shhmid, NULL, 0);
+    Car* c = shm;
+    for (int i = 0; i < length; i++) {
+        cars[i].smAddr = c;
+        *c++ = cars[i];
+    }
+}
+
+/*
+ * Renvoit la liste de la liste de structure "Car" stockée dans la SM et l'insère dans la liste
+ * mise en paramètre
+ */
+void getCarArray(Car cars[], int length) {
+    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), 0666);
+    Car* shm = (Car*) shmat(shmid, NULL, 0);
+    for (int i = 0; i < length; i++) {
+        cars[i] = *shm;
+        shm++;
+    }
+}
+
+void updateCarInSM(Car car, int length) {
+    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), 0666);
+    Car* shm = (Car*) shmat(shmid, NULL, 0);
+    *shm = car;
+}
+
+#undef SHM_CAR_ARRAY_KEY
+#undef SHM_MAIN_PID_KEY
+#undef SHM_COURSE_STATE_KEY
+#undef SHM_COURSE_KEY
 #endif //OS_2_PROJET_GROUPE_3_SHMUTILS_H

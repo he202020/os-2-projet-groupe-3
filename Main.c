@@ -20,7 +20,7 @@ int main() {
     createPid(cars, lenCars);
 
 
-    // Exmple d'une course en très très gros
+//     Exmple d'une course en très très gros
     if (getpid() == getMainPid()) {
         printf("Ici le main\n");
         sleep(5);
@@ -32,7 +32,21 @@ int main() {
         }
     }
 
-    printf("Fini pour : %d\n", getpid());
+//    printf("Fini pour : %d\n", getpid());
+
+    insertCarArray(cars, 4);
+    cars[0].currentS1 = 10;
+    printf("%f\n", cars[0].currentS1);
+    *cars[0].smAddr = cars[0];
+    Car cars2[4];
+    getCarArray(cars2, 4);
+    printf("%f\n", cars2[0].currentS1);
+//    Car cars2[4];
+//    getCarArray(cars2, 4);
+//    for (int i = 0; i < 4; i++) {
+//        printf("%d : %p\n", i, cars2[i].smAddr);
+//    }
+
     clearSHM();
 }
 
