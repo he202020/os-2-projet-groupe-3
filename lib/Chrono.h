@@ -3,11 +3,12 @@
 #include <stdio.h>
 
 void chrono(int delay) {
-    time_t start = time(NULL);
+    // time_t start = time(NULL);
 
     for (int i = 0; i < delay; ++i) {
         time_t end = time(NULL);
-        int diff = difftime(end, start);
+        setCourseState(false);
+        // int diff = difftime(end, start);
         // printf("%d\n", diff);
         sleep(1);
     }
