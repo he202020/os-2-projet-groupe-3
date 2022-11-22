@@ -20,6 +20,6 @@ int main() {
 
     save(cars, 20);
     Car cars2[20];
-    load(cars2);
+    load(cars2, 20);
 }
 

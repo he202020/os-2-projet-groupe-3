@@ -9,9 +9,12 @@
 #define FILE_NAME "../SaveResult"
 
 void save(Car cars[], int length);
-void load(Car cars[20]);
+void load(Car cars[20], int length);
 
 
+/*
+ * Sauve l'array de voiture dans le fichier FILE_NAME
+ */
 void save(Car cars[], int length) {
     FILE* file = fopen(FILE_NAME, "w");
     if (file == NULL) {
@@ -32,7 +35,10 @@ void save(Car cars[], int length) {
     fclose(file);
 }
 
-void load(Car cars[20]) {
+/*
+ * Récupère les numéros de voiture dans le fichier et insère les voitures dans l'array en paramètre
+ */
+void load(Car cars[], int length) {
     FILE* file = fopen(FILE_NAME, "r");
     if (file == NULL) {
         printf("Le fichier ne peut pas être ouvert\n");
@@ -43,13 +49,13 @@ void load(Car cars[20]) {
     char line[sb.st_size];
     int index = 0;
 
-    while(fgets(line, (int) sb.st_size, file) != NULL) {
+    while(fgets(line, (int) sb.st_size, file) != NULL && index < length) {
         char *notUsed;
         int id = (int) strtol(line, &notUsed, 10);
         cars[index] = getCar(id);
         index++;
     }
-//    fclose(file);
+    fclose(file);
 }
 
 #undef FILE_NAME
