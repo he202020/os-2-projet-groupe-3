@@ -46,7 +46,7 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
             }
             if (car.currentS2 < course.bestS2 || course.bestS2 == DEFAULT_VALUE) {
                 course.bestS2 = car.currentS2;
-                course.carS3 = car;
+                course.carS2 = car;
             }
             if (car.currentS3 < course.bestS3 || course.bestS3 == DEFAULT_VALUE) {
                 course.bestS3 = car.currentS3;

@@ -20,6 +20,8 @@ bool getCourseState();
 void registerCourse(Course course);
 Course getCourse();
 void insertCarArray(Car cars[], int length);
+void getCarArray(Car cars[], int length);
+void updateCarInSM(Car car, int length);
 
 /*
  * Créer tous les processus enfants et en associe un à chaque voiture
@@ -149,7 +151,7 @@ void insertCarArray(Car cars[], int length) {
  * mise en paramètre
  */
 void getCarArray(Car cars[], int length) {
-    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), 0666);
+    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), IPC_CREAT | 0666);
     Car* shm = (Car*) shmat(shmid, NULL, 0);
     for (int i = 0; i < length; i++) {
         cars[i] = *shm;
@@ -158,7 +160,7 @@ void getCarArray(Car cars[], int length) {
 }
 
 void updateCarInSM(Car car, int length) {
-    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), 0666);
+    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), IPC_CREAT | 0666);
     Car* shm = (Car*) shmat(shmid, NULL, 0);
     *shm = car;
 }
