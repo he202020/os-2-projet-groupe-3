@@ -45,11 +45,11 @@ double getCurrentTurn(Car car) {
 
 Car makeCarTurn(Car car) {
     car.currentS1 = getRandom(MIN_TIME, MAX_TIME, car.id);
-    strCar(car);
+    //strCar(car);
     car.currentS2 = getRandom(MIN_TIME, MAX_TIME, car.id);
-    strCar(car);
+    //strCar(car);
     car.currentS3 = getRandom(MIN_TIME, MAX_TIME, car.id);
-    strCar(car);
+    //strCar(car);
     return car;
 }
 

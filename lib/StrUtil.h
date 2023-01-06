@@ -20,7 +20,8 @@ void timeToStr(char buffer[], double time) {
     second += time - (int) time;
 
     int maxlen = sizeForTimeToStr(time);
-    snprintf(buffer, maxlen, "%dH %dm %2.3fs", hour, minute, second);
+    snprintf(buffer, maxlen, "%dm %2.3fs", minute, second);
+
 }
 
 /*
