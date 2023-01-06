@@ -160,7 +160,7 @@ void getCarArray(Car cars[], int length) {
 }
 
 void updateCarInSM(Car car, int length) {
-    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), 0666);
+    int shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[length]), IPC_CREAT | 0666);
     Car* shm = (Car*) shmat(shmid, NULL, 0);
     *shm = car;
 }
