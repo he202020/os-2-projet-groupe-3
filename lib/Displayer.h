@@ -35,7 +35,7 @@ void display_end(WINDOW *win) {
 void display_titles(WINDOW *win, char list0fTitles[5][10], int colLg) {
     int startCol = 1;
     for (int i = 0; i < 5; ++i) {
-        mvwprintw(win, 4, startCol, list0fTitles[i]);
+        mvwprintw(win, 4, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
 }
@@ -54,13 +54,13 @@ void display_data(WINDOW *win, Car car, int row, int colLg) {
     sprintf(idStr, "%d", car.id);
 
     int startCol = 1;
-    mvwprintw(win, row, startCol, idStr);
+    mvwprintw(win, row, startCol, "%s", idStr);
     startCol += colLg;
-    mvwprintw(win, row, startCol, s1);
+    mvwprintw(win, row, startCol, "%s", s1);
     startCol += colLg;
-    mvwprintw(win, row, startCol, s2);
+    mvwprintw(win, row, startCol, "%s", s2);
     startCol += colLg;
-    mvwprintw(win, row, startCol, s3);
+    mvwprintw(win, row, startCol, "%s", s3);
     startCol += colLg;
-    mvwprintw(win, row, startCol, lap);
+    mvwprintw(win, row, startCol, "%s", lap);
 }

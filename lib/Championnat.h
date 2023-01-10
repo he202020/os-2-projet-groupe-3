@@ -1,23 +1,28 @@
 #ifndef OS_2_PROJET_GROUPE_3_CHAMPIONNAT_H
 #define OS_2_PROJET_GROUPE_3_CHAMPIONNAT_H
-#define FILE_NAME "../championnat"
+#define FILE_NAME "champio"
 #define TEMP_FILE_NAME "temp"
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdbool.h>
 
 void deleteFirstLine();
+void getWeType(char* weType);
+int getSize();
 
+/*
+ * Renvoi le type de weekend parmi 'classic', 'special' ou NULL
+ * et supprime la première ligne du fichier de championnat
+ */
 void deleteFirstLine() {
     FILE* file = fopen(FILE_NAME, "r");
     char c;
     struct stat sb;
     stat(FILE_NAME, &sb);
     if (sb.st_size == 0) {
-        printf("Le fichier est vide\n");
+        fclose(file);
         return;
     }
-
     int countLine = 1;
     while ((c = getc(file)) != EOF)
         if (c == '\n')
@@ -25,7 +30,6 @@ void deleteFirstLine() {
 
     if (countLine == 1) {
         file = fopen(FILE_NAME, "w");
-        fputs(NULL, file);
         fclose(file);
         return;
     }
@@ -57,6 +61,26 @@ void deleteFirstLine() {
     fclose(file);
     fclose(temp);
     remove(TEMP_FILE_NAME);
+}
+
+
+void getWeType(char* weType) {
+    FILE* file = fopen(FILE_NAME, "r");
+    if (file == NULL) {
+        weType = NULL;
+        return;
+    }
+    struct stat sb;
+    stat(FILE_NAME, &sb);
+    fgets(weType, (int) sb.st_size + 10, file);
+    printf("%s\n", weType);
+    fclose(file);
+}
+
+int getSize() {
+    struct stat sb;
+    stat(FILE_NAME, &sb);
+    return (int) sb.st_size;
 }
 
 

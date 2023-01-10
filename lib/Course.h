@@ -5,7 +5,8 @@
 #include "StrUtil.h"
 #include "Displayer.h"
 #include "unistd.h"
-#include "stdio.h"
+#include "SHMUtils.h"
+#include <stdio.h>
 
 typedef struct Course {
     double bestS1;
@@ -22,6 +23,7 @@ typedef struct Course {
 void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg);
 Course initCourse();
 void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars);
+void beginTimedCourse(Course course, int time, Car cars[], int length);
 void strCourse(Course course);
 
 void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg) {
@@ -45,25 +47,25 @@ void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, i
 
     int startCol = 1;
     for (int i = 0; i < 8; ++i) {
-        mvwprintw(win, 1, startCol, list0fTitles[i]);
+        mvwprintw(win, 1, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
     startCol = 1;
-    mvwprintw(win, 2, startCol, lap);
+    mvwprintw(win, 2, startCol, "%s", lap);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestLapCar);
+    mvwprintw(win, 2, startCol, "%s", bestLapCar);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s1);
+    mvwprintw(win, 2, startCol, "%s", s1);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS1Car);
+    mvwprintw(win, 2, startCol, "%s", bestS1Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s2);
+    mvwprintw(win, 2, startCol, "%s", s2);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS2Car);
+    mvwprintw(win, 2, startCol, "%s", bestS2Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s3);
+    mvwprintw(win, 2, startCol, "%s", s3);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS3Car);
+    mvwprintw(win, 2, startCol, "%s", bestS3Car);
 }
 
 Course initCourse() {
@@ -81,8 +83,13 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
         return;
     }
 
+
     for (int i = 0; i < nbrTurn; i++) {
 
+        createPid(cars, nbrCars);
+        if (getpid() == getMainPid()) {
+
+        }
         WINDOW *win = display_init();
 
         char titlesCars[5][10] = { "Id", "S1", "S2", "S3", "Lap" };
