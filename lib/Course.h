@@ -104,7 +104,7 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
         int currRow = 5;
         for (int j = 0; j < nbrCars; j++) {
             Car car = cars[j];
-            car = makeCarTurn(car);
+            car = makeCarTurn(car, 0);
             if (car.currentS1 < course.bestS1 || course.bestS1 == DEFAULT_VALUE) {
                 course.bestS1 = car.currentS1;
                 course.carS1 = car;
@@ -148,23 +148,34 @@ void strCourse(Course course) {
            s1, course.carS1.id, s2, course.carS2.id, s3, course.carS3.id, lap, course.carLap.id);
 }
 
-void updateCourse(Car *cars, int length, Course course) {
+Course updateCourse(Car *cars, int length, Course course) {
     for (int i = 0; i < length; i++) {
         Car car = cars[i];
-        if (car.currentS1 < course.bestS1) {
+        if (car.currentS1 < course.bestS1 || course.bestS1 == -1) {
             course.bestS1 = car.currentS1;
             course.carS1 = car;
         }
-        if (car.currentS2 < course.bestS2) {
+        if (car.currentS2 < course.bestS2 || course.bestS2 == -1) {
             course.bestS2 = car.currentS2;
             course.carS2 = car;
         }
-        if (car.currentS3 < course.bestS3) {
+        if (car.currentS3 < course.bestS3 || course.bestS3 == -1) {
             course.bestS3 = car.currentS3;
             course.carS3 = car;
         }
+        double lap = car.currentS1 + car.currentS2 + car.currentS3;
+        if (lap < course.bestLap || course.bestLap < 0) {
+            course.bestLap = lap;
+            course.carLap = cars[i];
+        }
 
+        return course;
     }
+}
+
+void resetTotalTime(Car cars[], int length) {
+    for (int i = 0; i < length; i++)
+        cars[i].totalTime = 0;
 }
 #undef DEFAULT_VALUE
 #endif //OS_2_PROJET_GROUPE_3_COURSE_H

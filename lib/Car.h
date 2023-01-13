@@ -15,15 +15,19 @@ typedef struct Car {
     double currentS1;
     double currentS2;
     double currentS3;
+    double totalTime;
 
     int usure;
 } Car;
 
 Car getCar(int id);
 double getCurrentTurn(Car car);
-Car makeCarTurn(Car car);
+Car makeCarTurn(Car car, int bonusTime);
 void strCar(Car car);
 bool isAtStand(Car car);
+void sortByLap(Car cars[], int length);
+int comp(const void * a, const void *b);
+int compTotalTime(const void * a, const void *b);
 
 /*
  * Génération d'une voiture de base
@@ -38,6 +42,7 @@ Car getCar(int id) {
     car.currentS2 = CAR_DEFAULT_TIME;
     car.currentS3 = CAR_DEFAULT_TIME;
     car.usure = 100;
+    car.totalTime = 0;
     return car;
 }
 
@@ -48,7 +53,7 @@ double getCurrentTurn(Car car) {
     return car.currentS1 + car.currentS2 + car.currentS3;
 }
 
-Car makeCarTurn(Car car) {
+Car makeCarTurn(Car car, int bonusTime) {
     car.currentS1 = getRandom(MIN_TIME, MAX_TIME, car.id);
     if (isAtStand(car))
         car.currentS1 += TIME_AT_STAND;
@@ -58,7 +63,7 @@ Car makeCarTurn(Car car) {
     car.currentS3 = getRandom(MIN_TIME, MAX_TIME, car.id);
     if (isAtStand(car))
         car.currentS3 += TIME_AT_STAND;
-
+    car.totalTime += car.currentS1 + car.currentS2 + car.currentS3 + bonusTime;
     return car;
 }
 
@@ -91,6 +96,20 @@ bool isAtStand(Car car) {
     }
     car.usure += 3;
     return false;
+}
+
+int comp(const void * a, const void * b) {
+    Car car1 = *((Car *) a);
+    Car car2 = *((Car *) b);
+    double lap1 = car1.currentS1 + car1.currentS2 + car1.currentS3;
+    double lap2 = car2.currentS1 + car2.currentS2 + car2.currentS3;
+    return lap1 - lap2;
+}
+
+int compTotalTime(const void * a, const void * b) {
+    Car car1 = *((Car *) a);
+    Car car2 = *((Car *) b);
+    return car1.totalTime - car2.totalTime;
 }
 #undef MIN_TIME
 #undef MAX_TIME

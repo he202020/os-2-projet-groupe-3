@@ -26,7 +26,7 @@ WINDOW *display_init() {
 }
 
 void display_end(WINDOW *win) {
-    wgetch(win);
+    //wgetch(win);
     endwin();
 }
 
