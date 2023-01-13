@@ -11,6 +11,7 @@
 #include "lib/Championnat.h"
 
 int main(int argc, char* argv[]) {
+    clearSHM();
     registerMainPid(getpid());
     Car cars[] = {
             getCar(44), getCar(63), getCar(1), getCar(11),
@@ -20,6 +21,7 @@ int main(int argc, char* argv[]) {
             getCar(77), getCar(24), getCar(47), getCar(9)
     };
     const int lenCars = 20;
+    insertCarArray(cars, lenCars);
     char weType[getSize()];
     getWeType(weType);
     // décommenter la fonction pour que le championnat avance
@@ -31,19 +33,47 @@ int main(int argc, char* argv[]) {
 
         // vendredi matin : séance d'essais libre
         setCourseState(true);
-        while (getCourseState()) {
-            if (getpid() == getMainPid()) {
-                for (int i = 0; i < 10; i++) {
-                    sleep(6);
+        createPid(cars, lenCars);
+        printf("salut");
 
+        if (getpid() == getMainPid()) {
+            WINDOW *win = display_init();
+            Course  course = initCourse();
+            int largerOfColumns = 14;
+            for (int i = 0; i < 10; i++) {
+
+                Car curr_car[lenCars];
+
+                char titlesCars[5][10] = { "Id", "S1", "S2", "S3", "Lap" };
+                char titlesCourse[8][10] = {
+                        "Best Lap", "Car", "Best S1", "Car", "Best S2", "Car", "Best S3", "Car"
+                };
+                display_titles(win, titlesCars, largerOfColumns);
+
+                getCarArray(curr_car, lenCars);
+
+                for (int j = 0; j < lenCars; j++) {
+                    display_data(win, curr_car[j], j + 5, largerOfColumns);
+                }
+                updateCourse(curr_car, lenCars, course);
+                display_course_data(win, titlesCourse, course, largerOfColumns);
+
+                wrefresh(win);
+                sleep(6);
+            }
+            display_end(win);
+        } else {
+            while (getCourseState()) {
+                for (int i = 0; i < lenCars; ++i) {
+                    if (cars[i].pid==getpid()) {
+                        cars[i] = makeCarTurn(cars[i]);
+                        insertCarArray(cars, lenCars);
+                    }
                 }
             }
-        }
-
-        // supprimer les processus après leurs utilisations
-        if (getpid() != getMainPid())
             exit(0);
-        exit(0);
+        }
+        clearSHM();
     }
 
     if (strcmp(weType, "special") == 0 ) {

@@ -147,5 +147,24 @@ void strCourse(Course course) {
     printf("Résumé du tour : %s (%d) | %s (%d) | %s(%d) | %s(%d)\n",
            s1, course.carS1.id, s2, course.carS2.id, s3, course.carS3.id, lap, course.carLap.id);
 }
+
+void updateCourse(Car *cars, int length, Course course) {
+    for (int i = 0; i < length; i++) {
+        Car car = cars[i];
+        if (car.currentS1 < course.bestS1) {
+            course.bestS1 = car.currentS1;
+            course.carS1 = car;
+        }
+        if (car.currentS2 < course.bestS2) {
+            course.bestS2 = car.currentS2;
+            course.carS2 = car;
+        }
+        if (car.currentS3 < course.bestS3) {
+            course.bestS3 = car.currentS3;
+            course.carS3 = car;
+        }
+
+    }
+}
 #undef DEFAULT_VALUE
 #endif //OS_2_PROJET_GROUPE_3_COURSE_H
