@@ -4,13 +4,16 @@
 #define MIN_TIME 20
 #define MAX_TIME 45
 #define TIME_AT_STAND 10
+#define FILE_POINT "points"
 #include "Random.h"
 #include "StrUtil.h"
+#include <sys/stat.h>
 
 typedef struct Car {
     int id; // numéro de la voiture
     int pid;
     struct Car* smAddr;
+    int point;
 
     double currentS1;
     double currentS2;
@@ -42,7 +45,9 @@ Car getCar(int id) {
     car.currentS2 = CAR_DEFAULT_TIME;
     car.currentS3 = CAR_DEFAULT_TIME;
     car.usure = 100;
+    car.point = 0;
     car.totalTime = 0;
+
     return car;
 }
 
@@ -110,6 +115,50 @@ int compTotalTime(const void * a, const void * b) {
     Car car1 = *((Car *) a);
     Car car2 = *((Car *) b);
     return car1.totalTime - car2.totalTime;
+}
+
+void getPoints(Car cars[], int length) {
+    FILE *file = fopen(FILE_POINT, "r");
+    if (file == NULL)
+        return;
+
+    printf("ii\n");
+    struct stat sb;
+    stat(FILE_POINT, &sb);
+    char line[sb.st_size];
+
+    printf("dbdd\n");
+    while(fgets(line, (int) sb.st_size + 10, file) != NULL) {
+        char *notUsed;
+        char *notUsed2;
+        char *ptr = strtok(line, ",");
+        int id = (int) strtol(ptr, &notUsed, 10);
+        ptr = strtok(NULL, ",");
+        int point = (int) strtol(ptr, &notUsed2, 10);
+        for (int i = 0; i < length; i++) {
+            if (cars[i].id == id) {
+                cars[i].point = point;
+            }
+        }
+    }
+    fclose(file);
+}
+
+void storePoints(Car cars[], int length) {
+    printf("ici\n");
+    FILE *file = fopen(FILE_POINT, "w");
+    char *str;
+    sprintf(str, "%d,%d\n", cars[0].id, cars[0].point);
+    for (int i = 1; i < length; i++) {
+        char *strCar;
+        printf("par là%d %d\n", cars[i].id, cars[i].point);
+        sprintf(strCar, "%d,%d\n", cars[i].id, cars[i].point);
+        printf("où\n");
+        strcat(str, strCar);
+    }
+    printf("par ici\n");
+    fputs(str, file);
+    fclose(file);
 }
 #undef MIN_TIME
 #undef MAX_TIME

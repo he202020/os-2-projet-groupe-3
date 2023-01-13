@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
             getCar(77), getCar(24), getCar(47), getCar(9)
     };
     int lenCars = 20;
+    storePoints(cars, 20);
     insertCarArray(cars, lenCars);
     char weType[getSize()];
     getWeType(weType);
@@ -30,6 +31,8 @@ int main(int argc, char* argv[]) {
 
 
     if (strcmp(weType, "classic") == 0) {
+
+        exit(0);
         // vendredi matin
         essaisLibre(cars, lenCars, false, "Essai libre");
         printf("ici\n");
