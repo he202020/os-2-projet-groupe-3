@@ -6,7 +6,7 @@
 #define OS_2_PROJET_GROUPE_3_ESSAISLIBRE_H
 #include "Car.h"
 
-void essaisLibre(Car cars[], int lenCars, bool bonusTime) {
+void essaisLibre(Car cars[], int lenCars, bool bonusTime, char raceType[]) {
     setCourseState(true);
     createPid(cars, lenCars);
 
@@ -32,7 +32,7 @@ void essaisLibre(Car cars[], int lenCars, bool bonusTime) {
                 display_data(win, curr_car[j], j + 5, largerOfColumns);
             }
             course = updateCourse(curr_car, lenCars, course);
-            display_course_data(win, titlesCourse, course, largerOfColumns);
+            display_course_data(win, titlesCourse, course, largerOfColumns, raceType);
 
             wrefresh(win);
 

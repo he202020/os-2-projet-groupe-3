@@ -20,13 +20,13 @@ typedef struct Course {
     Car carLap;
 } Course;
 
-void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg);
+void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg, char raceType[]);
 Course initCourse();
 void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars);
 void beginTimedCourse(Course course, int time, Car cars[], int length);
 void strCourse(Course course);
 
-void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg) {
+void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg, char raceType[]) {
     char s1[sizeForTimeToStr(course.bestS1)];
     char s2[sizeForTimeToStr(course.bestS2)];
     char s3[sizeForTimeToStr(course.bestS3)];
@@ -45,27 +45,29 @@ void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, i
     sprintf(bestS2Car, "%d", course.carS2.id);
     sprintf(bestS3Car, "%d", course.carS3.id);
 
+    mvwprintw(win, 1, 1, "%s", raceType);
+
     int startCol = 1;
     for (int i = 0; i < 8; ++i) {
-        mvwprintw(win, 1, startCol, "%s", list0fTitles[i]);
+        mvwprintw(win, 2, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
     startCol = 1;
-    mvwprintw(win, 2, startCol, "%s", lap);
+    mvwprintw(win, 3, startCol, "%s", lap);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", bestLapCar);
+    mvwprintw(win, 3, startCol, "%s", bestLapCar);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", s1);
+    mvwprintw(win, 3, startCol, "%s", s1);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", bestS1Car);
+    mvwprintw(win, 3, startCol, "%s", bestS1Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", s2);
+    mvwprintw(win, 3, startCol, "%s", s2);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", bestS2Car);
+    mvwprintw(win, 3, startCol, "%s", bestS2Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", s3);
+    mvwprintw(win, 3, startCol, "%s", s3);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, "%s", bestS3Car);
+    mvwprintw(win, 3, startCol, "%s", bestS3Car);
 }
 
 Course initCourse() {
@@ -124,7 +126,7 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
             display_data(win, car, currRow, largerOfColumns);
             currRow += 1;
         }
-        display_course_data(win, titlesCourse, course, largerOfColumns);
+        display_course_data(win, titlesCourse, course, largerOfColumns, "zizi");
         wrefresh(win);
         //sleep(1);
         display_end(win);

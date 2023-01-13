@@ -31,26 +31,26 @@ int main(int argc, char* argv[]) {
 
     if (strcmp(weType, "classic") == 0) {
         // vendredi matin
-        essaisLibre(cars, lenCars, false);
+        essaisLibre(cars, lenCars, false, "Essai libre");
         printf("ici\n");
         // vendredi après-midi
-        essaisLibre(cars, lenCars, false);
+        essaisLibre(cars, lenCars, false, "Essai libre");
 
         // samedi
 
-        essaisLibre(cars, lenCars, false);
+        essaisLibre(cars, lenCars, false, "Qualification 1");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 15;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
 
-        essaisLibre(cars, lenCars, false);
+        essaisLibre(cars, lenCars, false, "Qualification 2");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 10;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
 
-        essaisLibre(cars, lenCars, false);
+        essaisLibre(cars, lenCars, false, "Qualification 3");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 20;
         resetTotalTime(cars, lenCars);
