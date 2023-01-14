@@ -18,7 +18,8 @@ void courseSprint(Car cars[], int length, int tour) {
         int largerOfColumns = 14;
         sleep(2);
         Car cars2[length];
-        while (getFinishedCars() < 18) {
+        int debug = 0;
+        while (getFinishedCars() < 19 && debug < 20) {
             getCarArray(cars2, length);
             qsort(cars2, length, sizeof(Car), comp);
             char titlesCars[5][10] = { "Id", "S1", "S2", "S3", "Lap" };
@@ -33,6 +34,7 @@ void courseSprint(Car cars[], int length, int tour) {
             display_course_data(win, titlesCourse, course, largerOfColumns,
                                 "Course Sprint - Spécial");
             wrefresh(win);
+            debug++;
             sleep(1);
         }
         display_end(win);

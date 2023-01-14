@@ -117,6 +117,12 @@ int compTotalTime(const void * a, const void * b) {
     return (int) car1.totalTime - (int) car2.totalTime;
 }
 
+int compPoint(const void * a, const void * b) {
+    Car car1 = *((Car *) a);
+    Car car2 = *((Car *) b);
+    return (int) car2.point - (int) car1.point;
+}
+
 void getPoints(Car cars[], int length) {
     FILE *file = fopen(FILE_POINT, "r");
     if (file == NULL)

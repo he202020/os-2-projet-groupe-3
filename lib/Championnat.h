@@ -97,6 +97,19 @@ void setPoints(Car cars[]) {
 }
 
 
+
+void classement(Car cars[], int length) {
+    system("clear");
+    qsort(cars, length, sizeof(Car), compPoint);
+    printf("\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tClassement du championnat :\n");
+    printf("\t\t\t\t\t\t---------------------------\n");
+    printf("\t\t\t\t\t\t Premier : %d - %d points\n", cars[0].id, cars[0].point);
+    printf("\t\t\t\t\t\t Second : %d - %d points\n", cars[1].id, cars[1].point);
+    printf("\t\t\t\t\t\t Troisième : %d - %d points\n", cars[2].id, cars[2].point);
+    printf("\t\t\t\t\t\t---------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+}
+
+
 #undef FILE_NAME
 #undef TEMP_FILE_NAME
 #endif //OS_2_PROJET_GROUPE_3_CHAMPIONNAT_H
