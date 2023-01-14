@@ -49,25 +49,25 @@ void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, i
 
     int startCol = 1;
     for (int i = 0; i < 8; ++i) {
-        mvwprintw(win, 2, startCol, "%s", list0fTitles[i]);
+        mvwprintw(win, 3, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
     startCol = 1;
-    mvwprintw(win, 3, startCol, "%s", lap);
+    mvwprintw(win, 4, startCol, "%s", lap);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", bestLapCar);
+    mvwprintw(win, 4, startCol, "%s", bestLapCar);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", s1);
+    mvwprintw(win, 4, startCol, "%s", s1);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", bestS1Car);
+    mvwprintw(win, 4, startCol, "%s", bestS1Car);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", s2);
+    mvwprintw(win, 4, startCol, "%s", s2);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", bestS2Car);
+    mvwprintw(win, 4, startCol, "%s", bestS2Car);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", s3);
+    mvwprintw(win, 4, startCol, "%s", s3);
     startCol += colLg;
-    mvwprintw(win, 3, startCol, "%s", bestS3Car);
+    mvwprintw(win, 4, startCol, "%s", bestS3Car);
 }
 
 Course initCourse() {

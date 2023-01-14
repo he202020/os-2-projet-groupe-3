@@ -108,13 +108,13 @@ int comp(const void * a, const void * b) {
     Car car2 = *((Car *) b);
     double lap1 = car1.currentS1 + car1.currentS2 + car1.currentS3;
     double lap2 = car2.currentS1 + car2.currentS2 + car2.currentS3;
-    return (int) lap1 - lap2;
+    return (int) lap1 - (int) lap2;
 }
 
 int compTotalTime(const void * a, const void * b) {
     Car car1 = *((Car *) a);
     Car car2 = *((Car *) b);
-    return (int) car1.totalTime - car2.totalTime;
+    return (int) car1.totalTime - (int) car2.totalTime;
 }
 
 void getPoints(Car cars[], int length) {

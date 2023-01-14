@@ -10,6 +10,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "lib/Championnat.h"
+#include "lib/CourseSprint.h"
 
 int main(int argc, char* argv[]) {
     clearSHM();
@@ -28,82 +29,90 @@ int main(int argc, char* argv[]) {
         storePoints(cars, lenCars);
     }
     insertCarArray(cars, lenCars);
-    char weType[getSize()];
+    char weType[getSize() + 10];
     getWeType(weType);
     // décommenter la fonction pour que le championnat avance
-//    deleteFirstLine();
+    deleteFirstLine();
 
-
-    if (strcmp(weType, "classic") == 0) {
+    printf("4\n");
+    if (strcmp(weType, "classic") == 0 || strcmp(weType, "classic\n") == 0) {
 
         // vendredi matin
-        essaisLibre(cars, lenCars, false, "Essai libre");
-        printf("ici\n");
+        essaisLibre(cars, lenCars, false, "Essai libre - Classic");
         // vendredi après-midi
-        essaisLibre(cars, lenCars, false, "Essai libre");
+        essaisLibre(cars, lenCars, false, "Essai libre - Classic");
 
         // samedi
 
-        essaisLibre(cars, lenCars, false, "Qualification 1");
+        essaisLibre(cars, lenCars, false, "Qualification 1 - Classic");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 15;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
 
-        essaisLibre(cars, lenCars, false, "Qualification 2");
+        essaisLibre(cars, lenCars, false, "Qualification 2 - Classic");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 10;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
 
-        essaisLibre(cars, lenCars, false, "Qualification 3");
+        essaisLibre(cars, lenCars, false, "Qualification 3 - Classic");
         qsort(cars, lenCars, sizeof(Car), comp);
         lenCars = 20;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
 
         // course du dimanche
-        essaisLibre(cars, lenCars, true, "Course finale");
+        essaisLibre(cars, lenCars, true, "Course finale - Classic");
         qsort(cars, lenCars, sizeof(Car), compTotalTime);
-        cars[0].point += 25;
-        cars[1].point += 20;
-        cars[2].point += 15;
-        cars[3].point += 10;
-        cars[4].point += 8;
-        cars[5].point += 6;
-        cars[6].point += 5;
-        cars[7].point += 3;
-        cars[8].point += 2;
-        cars[9].point += 1;
+        setPoints(cars);
         storePoints(cars, 20);
         insertCarArray(cars, 20);
 
         clearSHM();
     }
 
-    if (strcmp(weType, "special") == 0 ) {
-        printf("Week-end spécial\n");
+    if (strcmp(weType, "special") == 0 || strcmp(weType, "spacial\n") == 0) {
+        /**
+        // vendredi matin
+        essaisLibre(cars, lenCars, 0, "Essais libres - Spécial");
+
+        // vendredi après-midi
+        Car *cars2 = cars;
+        // Q1
+        essaisLibre(cars, lenCars, false, "Qualification 1 - Spécial");
+        qsort(cars, lenCars, sizeof(Car), comp);
+        lenCars = 15;
+        resetTotalTime(cars, lenCars);
+        insertCarArray(cars, lenCars);
+
+        // Q2
+        essaisLibre(cars, lenCars, false, "Qualification 2 - Spécial");
+        qsort(cars, lenCars, sizeof(Car), comp);
+        lenCars = 10;
+        resetTotalTime(cars, lenCars);
+        insertCarArray(cars, lenCars);
+
+        // Q3
+        essaisLibre(cars, lenCars, false, "Qualification 3 - Spécial");
+        qsort(cars, lenCars, sizeof(Car), comp);
+        lenCars = 20;
+        resetTotalTime(cars, lenCars);
+        insertCarArray(cars, lenCars);
+
+
+        // Samedi matin
+        essaisLibre(cars2, 20, false, "Essais libres - Spécial");
+        */
+        // Samedi après-midi
+        resetTotalTime(cars, 20);
+        courseSprint(cars, lenCars, 20);
+        qsort(cars, lenCars, sizeof(Car), compTotalTime);
+        setPoints(cars);
+        storePoints(cars, 20);
         exit(0);
     }
 
     printf("Plus de week-end\n");
     exit(0);
-
-
-
-
-    setCourseState(true);
-    createPid(cars, lenCars);
-    if (getpid() == getMainPid()) {
-        printf("Ici le main\n");
-        Course course1 = initCourse();
-        beginCourse(course1, 3, cars, 4);
-        setCourseState(false);
-    } else {
-        while (getCourseState()) {
-            //printf("%d\n", getpid());
-            //sleep(1);
-        }
-    }
-    clearSHM();
 }

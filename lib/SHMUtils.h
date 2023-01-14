@@ -10,6 +10,7 @@
 #define SHM_COURSE_STATE_KEY 4579
 #define SHM_COURSE_KEY 5421
 #define SHM_CAR_ARRAY_KEY 1515
+#define SHM_FINISHED_CAR 1432
 
 void createPid(Car cars[], int length);
 void clearSHM();
@@ -51,6 +52,12 @@ void clearSHM() {
 
     if ((shmid = shmget(SHM_CAR_ARRAY_KEY, sizeof(Car[20]), IPC_CREAT | 0666)) != -1) {
         Car* addr = shmat(shmid, NULL, 0666);
+        shmdt(addr);
+        shmctl(shmid, IPC_RMID, NULL);
+    }
+
+    if ((shmid = shmget(SHM_FINISHED_CAR, sizeof(int), IPC_CREAT | 0666)) != -1) {
+        int* addr = (int*) shmat(shmid, NULL, 0666);
         shmdt(addr);
         shmctl(shmid, IPC_RMID, NULL);
     }
@@ -138,8 +145,25 @@ void updateCarInSM(Car car, int length) {
     *shm = car;
 }
 
+int getFinishedCars() {
+    int shmid = shmget(SHM_FINISHED_CAR, sizeof(int), 0666);
+    if (shmid == -1) exit(2);
+    int* shm = (int*) shmat(shmid, NULL, 0);
+    return *shm;
+}
+
+void setFinishedCar(int finishedCar) {
+    int shmid = shmget(SHM_FINISHED_CAR, sizeof(int), IPC_CREAT | 0666);
+    if (shmid < 0) exit(1);
+
+    int* shm = (int*) shmat(shmid, NULL, 0);
+    int* i = shm;
+    *shm++ = finishedCar;
+}
+
 #undef SHM_CAR_ARRAY_KEY
 #undef SHM_MAIN_PID_KEY
 #undef SHM_COURSE_STATE_KEY
 #undef SHM_COURSE_KEY
+#undef SHM_FINISHED_CAR
 #endif //OS_2_PROJET_GROUPE_3_SHMUTILS_H

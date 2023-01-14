@@ -35,7 +35,7 @@ void display_end(WINDOW *win) {
 void display_titles(WINDOW *win, char list0fTitles[5][10], int colLg) {
     int startCol = 1;
     for (int i = 0; i < 5; ++i) {
-        mvwprintw(win, 4, startCol, "%s", list0fTitles[i]);
+        mvwprintw(win, 6, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
 }

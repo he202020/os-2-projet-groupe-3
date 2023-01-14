@@ -29,7 +29,7 @@ void essaisLibre(Car cars[], int lenCars, bool bonusTime, char raceType[]) {
             qsort(curr_car, lenCars, sizeof(Car), comp);
 
             for (int j = 0; j < lenCars; j++) {
-                display_data(win, curr_car[j], j + 5, largerOfColumns);
+                display_data(win, curr_car[j], j + 7, largerOfColumns);
             }
             course = updateCourse(curr_car, lenCars, course);
             display_course_data(win, titlesCourse, course, largerOfColumns, raceType);
@@ -51,13 +51,13 @@ void essaisLibre(Car cars[], int lenCars, bool bonusTime, char raceType[]) {
                     } else {
                         carUpdate[i] = makeCarTurn(cars[i], 0);
                     }
-
                     insertCarArray(carUpdate, lenCars);
                 }
             }
         }
         exit(0);
     }
+    getCarArray(cars, 20);
 }
 
 #endif //OS_2_PROJET_GROUPE_3_ESSAISLIBRE_H

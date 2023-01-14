@@ -9,6 +9,7 @@
 void deleteFirstLine();
 void getWeType(char* weType);
 int getSize();
+void setPoints(Car cars[]);
 
 /*
  * Renvoi le type de weekend parmi 'classic', 'special' ou NULL
@@ -64,7 +65,7 @@ void deleteFirstLine() {
 }
 
 
-void getWeType(char* weType) {
+void getWeType(char weType[]) {
     FILE* file = fopen(FILE_NAME, "r");
     if (file == NULL) {
         weType = NULL;
@@ -73,7 +74,6 @@ void getWeType(char* weType) {
     struct stat sb;
     stat(FILE_NAME, &sb);
     fgets(weType, (int) sb.st_size + 10, file);
-    printf("%s\n", weType);
     fclose(file);
 }
 
@@ -81,6 +81,19 @@ int getSize() {
     struct stat sb;
     stat(FILE_NAME, &sb);
     return (int) sb.st_size;
+}
+
+void setPoints(Car cars[]) {
+    cars[0].point += 25;
+    cars[1].point += 20;
+    cars[2].point += 15;
+    cars[3].point += 10;
+    cars[4].point += 8;
+    cars[5].point += 6;
+    cars[6].point += 5;
+    cars[7].point += 3;
+    cars[8].point += 2;
+    cars[9].point += 1;
 }
 
 
