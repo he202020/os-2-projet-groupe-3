@@ -108,13 +108,13 @@ int comp(const void * a, const void * b) {
     Car car2 = *((Car *) b);
     double lap1 = car1.currentS1 + car1.currentS2 + car1.currentS3;
     double lap2 = car2.currentS1 + car2.currentS2 + car2.currentS3;
-    return lap1 - lap2;
+    return (int) lap1 - lap2;
 }
 
 int compTotalTime(const void * a, const void * b) {
     Car car1 = *((Car *) a);
     Car car2 = *((Car *) b);
-    return car1.totalTime - car2.totalTime;
+    return (int) car1.totalTime - car2.totalTime;
 }
 
 void getPoints(Car cars[], int length) {
@@ -122,12 +122,10 @@ void getPoints(Car cars[], int length) {
     if (file == NULL)
         return;
 
-    printf("ii\n");
     struct stat sb;
     stat(FILE_POINT, &sb);
     char line[sb.st_size];
 
-    printf("dbdd\n");
     while(fgets(line, (int) sb.st_size + 10, file) != NULL) {
         char *notUsed;
         char *notUsed2;
@@ -145,18 +143,14 @@ void getPoints(Car cars[], int length) {
 }
 
 void storePoints(Car cars[], int length) {
-    printf("ici\n");
     FILE *file = fopen(FILE_POINT, "w");
-    char *str;
+    char str[100];
     sprintf(str, "%d,%d\n", cars[0].id, cars[0].point);
     for (int i = 1; i < length; i++) {
-        char *strCar;
-        printf("par là%d %d\n", cars[i].id, cars[i].point);
+        char strCar[10];
         sprintf(strCar, "%d,%d\n", cars[i].id, cars[i].point);
-        printf("où\n");
         strcat(str, strCar);
     }
-    printf("par ici\n");
     fputs(str, file);
     fclose(file);
 }

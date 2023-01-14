@@ -22,7 +22,11 @@ int main(int argc, char* argv[]) {
             getCar(77), getCar(24), getCar(47), getCar(9)
     };
     int lenCars = 20;
-    storePoints(cars, 20);
+    if (access(FILE_POINT, F_OK) == 0) {
+        getPoints(cars, lenCars);
+    } else {
+        storePoints(cars, lenCars);
+    }
     insertCarArray(cars, lenCars);
     char weType[getSize()];
     getWeType(weType);
@@ -32,7 +36,6 @@ int main(int argc, char* argv[]) {
 
     if (strcmp(weType, "classic") == 0) {
 
-        exit(0);
         // vendredi matin
         essaisLibre(cars, lenCars, false, "Essai libre");
         printf("ici\n");
@@ -58,6 +61,22 @@ int main(int argc, char* argv[]) {
         lenCars = 20;
         resetTotalTime(cars, lenCars);
         insertCarArray(cars, lenCars);
+
+        // course du dimanche
+        essaisLibre(cars, lenCars, true, "Course finale");
+        qsort(cars, lenCars, sizeof(Car), compTotalTime);
+        cars[0].point += 25;
+        cars[1].point += 20;
+        cars[2].point += 15;
+        cars[3].point += 10;
+        cars[4].point += 8;
+        cars[5].point += 6;
+        cars[6].point += 5;
+        cars[7].point += 3;
+        cars[8].point += 2;
+        cars[9].point += 1;
+        storePoints(cars, 20);
+        insertCarArray(cars, 20);
 
         clearSHM();
     }
