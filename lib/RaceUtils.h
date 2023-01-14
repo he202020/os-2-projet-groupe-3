@@ -5,7 +5,8 @@
 #include "StrUtil.h"
 #include "Displayer.h"
 #include "unistd.h"
-#include "stdio.h"
+#include "SHMUtils.h"
+#include <stdio.h>
 
 typedef struct Course {
     double bestS1;
@@ -19,12 +20,13 @@ typedef struct Course {
     Car carLap;
 } Course;
 
-void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg);
+void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg, char raceType[]);
 Course initCourse();
 void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars);
+void beginTimedCourse(Course course, int time, Car cars[], int length);
 void strCourse(Course course);
 
-void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg) {
+void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, int colLg, char raceType[]) {
     char s1[sizeForTimeToStr(course.bestS1)];
     char s2[sizeForTimeToStr(course.bestS2)];
     char s3[sizeForTimeToStr(course.bestS3)];
@@ -43,27 +45,29 @@ void display_course_data(WINDOW *win, char list0fTitles[8][10], Course course, i
     sprintf(bestS2Car, "%d", course.carS2.id);
     sprintf(bestS3Car, "%d", course.carS3.id);
 
+    mvwprintw(win, 1, 1, "%s", raceType);
+
     int startCol = 1;
     for (int i = 0; i < 8; ++i) {
-        mvwprintw(win, 1, startCol, list0fTitles[i]);
+        mvwprintw(win, 3, startCol, "%s", list0fTitles[i]);
         startCol += colLg;
     }
     startCol = 1;
-    mvwprintw(win, 2, startCol, lap);
+    mvwprintw(win, 4, startCol, "%s", lap);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestLapCar);
+    mvwprintw(win, 4, startCol, "%s", bestLapCar);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s1);
+    mvwprintw(win, 4, startCol, "%s", s1);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS1Car);
+    mvwprintw(win, 4, startCol, "%s", bestS1Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s2);
+    mvwprintw(win, 4, startCol, "%s", s2);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS2Car);
+    mvwprintw(win, 4, startCol, "%s", bestS2Car);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, s3);
+    mvwprintw(win, 4, startCol, "%s", s3);
     startCol += colLg;
-    mvwprintw(win, 2, startCol, bestS3Car);
+    mvwprintw(win, 4, startCol, "%s", bestS3Car);
 }
 
 Course initCourse() {
@@ -81,8 +85,13 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
         return;
     }
 
+
     for (int i = 0; i < nbrTurn; i++) {
 
+        createPid(cars, nbrCars);
+        if (getpid() == getMainPid()) {
+
+        }
         WINDOW *win = display_init();
 
         char titlesCars[5][10] = { "Id", "S1", "S2", "S3", "Lap" };
@@ -97,7 +106,7 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
         int currRow = 5;
         for (int j = 0; j < nbrCars; j++) {
             Car car = cars[j];
-            car = makeCarTurn(car);
+            car = makeCarTurn(car, 0);
             if (car.currentS1 < course.bestS1 || course.bestS1 == DEFAULT_VALUE) {
                 course.bestS1 = car.currentS1;
                 course.carS1 = car;
@@ -117,7 +126,7 @@ void beginCourse(Course course, int nbrTurn, Car cars[], int nbrCars) {
             display_data(win, car, currRow, largerOfColumns);
             currRow += 1;
         }
-        display_course_data(win, titlesCourse, course, largerOfColumns);
+        display_course_data(win, titlesCourse, course, largerOfColumns, "zizi");
         wrefresh(win);
         //sleep(1);
         display_end(win);
@@ -139,6 +148,36 @@ void strCourse(Course course) {
     timeToStr(lap, course.bestLap);
     printf("Résumé du tour : %s (%d) | %s (%d) | %s(%d) | %s(%d)\n",
            s1, course.carS1.id, s2, course.carS2.id, s3, course.carS3.id, lap, course.carLap.id);
+}
+
+Course updateCourse(Car *cars, int length, Course course) {
+    for (int i = 0; i < length; i++) {
+        Car car = cars[i];
+        if (car.currentS1 < course.bestS1 || course.bestS1 == -1) {
+            course.bestS1 = car.currentS1;
+            course.carS1 = car;
+        }
+        if (car.currentS2 < course.bestS2 || course.bestS2 == -1) {
+            course.bestS2 = car.currentS2;
+            course.carS2 = car;
+        }
+        if (car.currentS3 < course.bestS3 || course.bestS3 == -1) {
+            course.bestS3 = car.currentS3;
+            course.carS3 = car;
+        }
+        double lap = car.currentS1 + car.currentS2 + car.currentS3;
+        if (lap < course.bestLap || course.bestLap < 0) {
+            course.bestLap = lap;
+            course.carLap = cars[i];
+        }
+
+        return course;
+    }
+}
+
+void resetTotalTime(Car cars[], int length) {
+    for (int i = 0; i < length; i++)
+        cars[i].totalTime = 0;
 }
 #undef DEFAULT_VALUE
 #endif //OS_2_PROJET_GROUPE_3_COURSE_H
