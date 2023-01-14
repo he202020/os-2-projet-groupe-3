@@ -4,7 +4,7 @@
 #define MIN_TIME 20
 #define MAX_TIME 45
 #define TIME_AT_STAND 10
-#define FILE_POINT "points"
+#define FILE_POINT "ranking"
 #include "Random.h"
 #include "StrUtil.h"
 #include <sys/stat.h>
@@ -115,6 +115,12 @@ int compTotalTime(const void * a, const void * b) {
     Car car1 = *((Car *) a);
     Car car2 = *((Car *) b);
     return (int) car1.totalTime - (int) car2.totalTime;
+}
+
+int compPoint(const void * a, const void * b) {
+    Car car1 = *((Car *) a);
+    Car car2 = *((Car *) b);
+    return (int) car2.point - (int) car1.point;
 }
 
 void getPoints(Car cars[], int length) {

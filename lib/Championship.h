@@ -1,6 +1,6 @@
 #ifndef OS_2_PROJET_GROUPE_3_CHAMPIONNAT_H
 #define OS_2_PROJET_GROUPE_3_CHAMPIONNAT_H
-#define FILE_NAME "champio"
+#define FILE_NAME "calendar"
 #define TEMP_FILE_NAME "temp"
 #include <stdio.h>
 #include <sys/stat.h>
@@ -94,6 +94,19 @@ void setPoints(Car cars[]) {
     cars[7].point += 3;
     cars[8].point += 2;
     cars[9].point += 1;
+}
+
+
+
+void classement(Car cars[], int length) {
+    system("clear");
+    qsort(cars, length, sizeof(Car), compPoint);
+    printf("\n\n\n\n\n\n\n\n\nClassement du championnat :\n");
+    printf("---------------------------\n");
+    printf(" Premier : %d - %d points\n", cars[0].id, cars[0].point);
+    printf(" Second : %d - %d points\n", cars[1].id, cars[1].point);
+    printf(" Troisième : %d - %d points\n", cars[2].id, cars[2].point);
+    printf("---------------------------\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
 

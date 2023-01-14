@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include "Car.h"
-#include "Course.h"
+#include "RaceUtils.h"
 
 WINDOW *display_init();
 void display_end(WINDOW *win);
